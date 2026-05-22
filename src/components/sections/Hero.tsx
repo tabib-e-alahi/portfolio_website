@@ -8,13 +8,14 @@ import { ArrowDownRight, Code2, Link2, Globe } from "lucide-react";
 import Image from "next/image";
 import { personalInfo } from "@/lib/data";
 import TechMarquee from "@/components/TechMarquee";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const socials = [
-  { icon: Code2, href: personalInfo.github,   label: "GitHub"   },
-  { icon: Link2, href: personalInfo.linkedin, label: "LinkedIn" },
-  { icon: Globe, href: personalInfo.facebook, label: "Facebook" },
+  { href: personalInfo.github,   label: "GitHub", src:"/github.png"   },
+  { href: personalInfo.linkedin, label: "LinkedIn", src:"/linkedin.png" },
+  { href: personalInfo.facebook, label: "Facebook", src:"/facebook.png" },
 ];
 
 const container: Variants = {
@@ -136,12 +137,12 @@ export default function Hero() {
                   <ArrowDownRight size={14} className="group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
                 </button>
                 {/* Secondary CTA */}
-                <a
+                <Link
                   href={personalInfo.resumeUrl}
                   className="font-mono-custom text-xs uppercase tracking-widest px-6 py-3 rounded-sm transition-all duration-300 border border-[var(--border-strong)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 >
-                  Download CV
-                </a>
+                  Download Resume
+                </Link>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {skills.map((s) => (<span key={s} className="tech-tag">{s}</span>))}
@@ -192,7 +193,7 @@ export default function Hero() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <div className="font-mono-custom text-xs text-[var(--text-dim)] mb-0.5">Projects</div>
-                  <div className="font-display font-bold text-2xl text-[var(--accent)]">10+</div>
+                  <div className="font-display font-bold text-2xl text-[var(--accent)]">6+</div>
                 </motion.div>
               </div>
             </motion.div>
@@ -213,17 +214,19 @@ export default function Hero() {
               <div className="flex items-center gap-4 lg:justify-end">
                 <span className="font-mono-custom text-xs text-[var(--text-dim)] uppercase tracking-widest">Follow</span>
                 <div className="rule w-8" />
-                {socials.map(({ icon: Icon, href, label }) => (
-                  <a
+                {socials.map(({ href, label, src }) => (
+                  <Link
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-9 h-9 border border-[var(--border-strong)] rounded-sm flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--glow)] transition-all duration-300"
+                    className="w-9 h-9  rounded-sm flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--glow)] transition-all duration-300"
                   >
-                    <Icon size={14} />
-                  </a>
+                    {/* <Icon size={14} /> */}
+                    <img src={`${src}`} alt="" />
+
+                  </Link>
                 ))}
               </div>
             </motion.div>

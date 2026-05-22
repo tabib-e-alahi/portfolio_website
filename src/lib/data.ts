@@ -10,7 +10,7 @@ export const personalInfo = {
   linkedin: "https://linkedin.com/in/tabibalahi",
   twitter: "https://twitter.com/tabibalahi",
   facebook: "https://facebook.com/tabibalahi",
-  resumeUrl: "#",
+  resumeUrl: "https://drive.google.com/file/d/1dPh7ml3kIOhEYPown0p79xD2yYDyquNt/view?usp=sharing",
 };
 
 export const aboutMe = {
@@ -71,35 +71,88 @@ export const education = [
   },
 ];
 
-export const experience = [
-  {
-    role: "Junior Frontend Developer",
-    company: "TechVenture BD",
-    location: "Dhaka, Bangladesh",
-    period: "Jan 2024 – Present",
-    type: "Full-time",
-    responsibilities: [
-      "Built and maintained React.js-based dashboards for 3+ enterprise clients",
-      "Collaborated with UI/UX designers to implement pixel-perfect designs",
-      "Improved page load performance by 40% through code splitting and lazy loading",
-      "Integrated REST APIs and implemented state management with Redux Toolkit",
-    ],
-  },
-  {
-    role: "Web Developer Intern",
-    company: "CreativeMinds Agency",
-    location: "Dhaka, Bangladesh",
-    period: "Jul 2023 – Dec 2023",
-    type: "Internship",
-    responsibilities: [
-      "Developed responsive landing pages using HTML, CSS, and JavaScript",
-      "Assisted in migrating a legacy jQuery site to React",
-      "Learned agile development workflows and version control best practices",
-    ],
-  },
-];
+// export const experience = [
+//   {
+//     role: "Junior Frontend Developer",
+//     company: "TechVenture BD",
+//     location: "Dhaka, Bangladesh",
+//     period: "Jan 2024 – Present",
+//     type: "Full-time",
+//     responsibilities: [
+//       "Built and maintained React.js-based dashboards for 3+ enterprise clients",
+//       "Collaborated with UI/UX designers to implement pixel-perfect designs",
+//       "Improved page load performance by 40% through code splitting and lazy loading",
+//       "Integrated REST APIs and implemented state management with Redux Toolkit",
+//     ],
+//   },
+//   {
+//     role: "Web Developer Intern",
+//     company: "CreativeMinds Agency",
+//     location: "Dhaka, Bangladesh",
+//     period: "Jul 2023 – Dec 2023",
+//     type: "Internship",
+//     responsibilities: [
+//       "Developed responsive landing pages using HTML, CSS, and JavaScript",
+//       "Assisted in migrating a legacy jQuery site to React",
+//       "Learned agile development workflows and version control best practices",
+//     ],
+//   },
+// ];
 
 export const projects = [
+  {
+    slug: "edubridge",
+    name: "EduBridge — AI-Powered Learning Management System",
+    shortDesc:
+      "A full-stack LMS built from scratch with multi-role dashboards, AI-assisted learning tools (tutor, quiz generator, roadmap builder), automated certificate issuance, and a complete course lifecycle from draft to published — powered by Gemini 2.5 Flash.",
+    image: "/edubridge_image.png",
+    techStack: [
+      "Next.js 16",
+      "TypeScript",
+      "React 19",
+      "Express.js 5",
+      "PostgreSQL (Neon)",
+      "Prisma ORM",
+      "Better Auth",
+      "Cloudinary",
+      "Google Gemini 2.5 Flash",
+      "pdf-lib",
+      "Nodemailer",
+      "Tailwind CSS v4",
+      "Shadcn/UI",
+      "TanStack Query",
+      "Redux Toolkit",
+      "Zod",
+      "Framer Motion",
+      "Recharts",
+    ],
+    description: `EduBridge is a production-grade Learning Management System where students can browse, enroll in, and complete courses; instructors can build curriculum with lessons, quizzes, and assignments; and admins govern the entire ecosystem through a dedicated control panel.
+
+The platform supports four distinct roles: Student, Instructor, Manager (elevated instructor with moderation rights), and Admin. Instructors submit courses through a structured review pipeline (DRAFT → IN_REVIEW → PUBLISHED/REJECTED) before going live. The system enforces RBAC at the API level using a custom permission middleware that maps roles to fine-grained permission constants — 30+ permissions covering every resource in the system.
+
+The AI layer is built on Gemini 2.5 Flash and includes five distinct features: an in-lesson AI Tutor chatbot with persistent conversation history, an AI quiz generator that instructors can use to populate quizzes from any topic, an AI roadmap/learning path builder for students, AI course outline and lesson description generators for instructors, and an AI engagement analyzer that interprets instructor course analytics. All AI requests are token-logged to the AIRequestLog table for admin monitoring and cost tracking.
+
+Certificate issuance is fully automated — when a student's lesson progress hits 100%, the system triggers an async certificate job that calculates a grade from quiz attempt averages, generates a verifiable certificate with a unique hash and certificate number, and stores a downloadable PDF (generated with pdf-lib) linked to the student's account. Certificates are publicly verifiable via a URL containing the verificationHash.
+
+The learn page is a 726-line single-file lesson player with a three-panel layout: a collapsible lesson sidebar, the main content area (video/text), and a right toolkit panel that toggles between a resource list and the AI Tutor chat. Progress is tracked per-lesson and synced on every lesson completion.`,
+    liveLink: "https://edubridge-frontend-zeta.vercel.app",
+    githubClient: "https://github.com/tabib-e-alahi/eduBridge_client",
+    githubServer: "https://github.com/tabib-e-alahi/eduBridge_server",
+    challenges: [
+      "Designing the RBAC system required defining 30+ fine-grained permission constants and a role-to-permission map that the requirePermission middleware enforces on every protected route — making it easy to add new roles or restrict individual endpoints without changing business logic.",
+      "The automated certificate pipeline had to be non-blocking: it fires as an async IIFE inside updateProgressInDB after the progress update resolves, so a certificate failure never breaks the progress save. It also deduplicates certificate numbers with a retry loop before insertion.",
+      "Building the AI layer with persistent conversation history required structuring the AIConversation and AIMessage models so each chat session is scoped to a (userId, context) pair — meaning the tutor retains lesson-specific context across multiple questions in the same session.",
+      "The quiz grading engine needed to be deterministic across three surfaces (lesson player toolkit, student quiz page, instructor result view) — so scoring logic lives exclusively in the enrollment service's submitQuizAttemptInDB, never in the frontend.",
+      "The course submission pipeline enforces strict pre-conditions at the service layer (title, description, thumbnail, at least one lesson, valid category) before allowing a DRAFT → IN_REVIEW transition, preventing incomplete courses from reaching the admin review queue.",
+    ],
+    improvements: [
+      "Replace polling-based notification fetching with a WebSocket or SSE-based real-time push so students get instant alerts for new grades, announcements, and certificate issuance.",
+      "Implement a real payment gateway (SSLCommerz or Stripe) — the current order/payment flow creates records and auto-enrolls, but there is no actual payment capture; capturePaymentInDB accepts a manual transactionId without any gateway verification.",
+      "Add WebRTC or third-party integration (Zoom SDK / Daily.co) to the LiveClass feature — currently LiveClass stores only a meetingUrl string with no scheduling automation, join tracking, or reminder notifications.",
+      "Message system needs real-time delivery — the current implementation is REST-based (send/fetch), meaning both parties must refresh to see new messages. WebSocket upgrade with read-receipt sync is required for a usable chat.",
+      "The certificate PDF generated by pdf-lib is a basic text-only layout. Replacing it with a custom-designed HTML-to-PDF pipeline (Puppeteer or a hosted service) would produce a shareable, LinkedIn-uploadable credential.",
+    ],
+  },
   {
     slug: "platera",
     name: "Platera — Where Every Plate Tells a Story",
@@ -144,27 +197,6 @@ The frontend is built with Next.js App Router using parallel routes for isolated
       "Build a recommendation engine on the homepage that surfaces meals based on a customer's order history, city, and time of day.",
       "Add multi-language support for Bangla and English, making the platform truly local and accessible to non-English-speaking home cooks.",
       "Implement a review reply system so providers can respond publicly to customer feedback, building trust and community on the platform.",
-    ],
-  },
-  {
-    slug: "task-management-app",
-    name: "TaskFlow — Project Management",
-    shortDesc: "A Kanban-style project management tool with drag-and-drop, real-time collaboration, and team analytics.",
-    image: "/project-2.png",
-    techStack: ["React.js", "TypeScript", "Socket.io", "Express.js", "PostgreSQL", "Framer Motion"],
-    description: `TaskFlow reimagines project management with an intuitive Kanban board, real-time multi-user collaboration, and detailed team performance analytics. Users can create workspaces, assign tasks with priority levels, set deadlines, attach files, and track progress through interactive charts. The drag-and-drop interface (powered by Framer Motion) makes task management feel natural and satisfying.`,
-    liveLink: "https://curious-dragon-bfb4a4.netlify.app",
-    githubClient: "https://github.com/hasibulislam/taskflow-client",
-    challenges: [
-      "Handling concurrent drag-and-drop operations from multiple users in real-time required implementing operational transformation algorithms.",
-      "Designing a database schema flexible enough to support different project methodologies (Kanban, Scrum, simple lists) was a significant architectural challenge.",
-      "Implementing offline-first functionality with sync on reconnect required a careful approach to conflict resolution.",
-    ],
-    improvements: [
-      "Add AI task prioritization based on deadline and workload analysis",
-      "Integrate with Slack and Microsoft Teams for notification delivery",
-      "Build a time-tracking feature with exportable reports",
-      "Create a mobile app with push notifications for task updates",
     ],
   },
   {

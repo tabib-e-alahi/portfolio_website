@@ -8,7 +8,7 @@ import { ArrowUpRight } from "lucide-react";
 import { projects } from "@/lib/data";
 
 export default function Projects() {
-  const ref    = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
@@ -24,7 +24,7 @@ export default function Projects() {
           >
             <span className="section-number block mb-3">05 — Projects</span>
             <h2 className="font-display font-bold leading-tight text-[var(--text)]"
-                style={{ fontSize: "clamp(40px, 6vw, 80px)" }}>
+              style={{ fontSize: "clamp(40px, 6vw, 80px)" }}>
               Selected<br />
               <span className="italic font-light gradient-text">work</span>
             </h2>
@@ -49,40 +49,49 @@ export default function Projects() {
           >
             <Link
               href={`/projects/${projects[0].slug}`}
-              className="group block border border-[var(--border)] hover:border-[var(--accent)] transition-all duration-500 overflow-hidden rounded-sm glow-border"
+              className="group block border border-[var(--border)] hover:border-[var(--accent)] transition-all duration-300 overflow-hidden rounded-sm"
             >
-              <div className="grid lg:grid-cols-2">
-                {/* Image */}
-                <div className="relative overflow-hidden bg-[var(--surface)]" style={{ aspectRatio: "4/3", minHeight: "280px" }}>
+              <div className="grid lg:grid-cols-2 lg:min-h-100 bg-[var(--surface)]">
+                {/* Image Section */}
+                <div className="relative aspect-4/3 lg:aspect-auto lg:min-h-full overflow-hidden ">
                   <Image
                     src={projects[0].image}
                     alt={projects[0].name}
                     fill
-                    sizes="(max-width:1024px) 100vw, 50vw"
-                    className="object-cover object-center transition-all duration-700 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  {/* Accent overlay */}
-                  <div className="absolute inset-0 bg-[var(--accent)] opacity-20 group-hover:opacity-5 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-primary/10 transition-opacity duration-300 group-hover:opacity-0" />
                 </div>
-                {/* Content */}
-                <div className="p-8 lg:p-12 flex flex-col justify-between bg-[var(--surface-2)]">
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="font-mono-custom text-xs text-[var(--accent)] uppercase tracking-widest border border-[var(--accent)] px-2 py-0.5 rounded-sm">
+
+                {/* Content Section */}
+                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
+                  <div className="space-y-4">
+                    {/* Header */}
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center rounded-md border border-primary/50 bg-primary/10 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-primary">
                         Featured
                       </span>
                       <ArrowUpRight
-                        size={18}
-                        className="text-[var(--text-dim)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
+                        size={20}
+                        className="text-muted-foreground transition-all duration-300 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       />
                     </div>
-                    <h3 className="font-display font-bold text-3xl lg:text-4xl text-[var(--text)] mb-4 leading-tight group-hover:text-[var(--accent)] transition-colors duration-300">
+
+                    {/* Title */}
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight text-foreground transition-colors duration-300 group-hover:text-primary">
                       {projects[0].name}
                     </h3>
-                    <p className="text-[var(--text-muted)] leading-relaxed text-sm mb-8">{projects[0].shortDesc}</p>
+
+                    {/* Description */}
+                    <p className="text-sm sm:text-base leading-relaxed text-muted-foreground line-clamp-3">
+                      {projects[0].shortDesc}
+                    </p>
                   </div>
+
+                  {/* Tech Stack */}
                   <div className="flex flex-wrap gap-2">
-                    {projects[0].techStack.slice(0, 6).map((t) => (
+                    {projects[0].techStack.slice(0, 4).map((t) => (
                       <span key={t} className="tech-tag">{t}</span>
                     ))}
                   </div>

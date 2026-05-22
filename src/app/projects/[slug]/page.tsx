@@ -38,14 +38,14 @@ export default async function ProjectPage({
         </div>
 
         {/* Hero image */}
-        <div className="relative h-72 lg:h-[480px] w-full mb-12 overflow-hidden border border-[var(--border)] rounded-sm">
+        <div className="relative h-72 lg:h-[480px] w-full mb-12 overflow-hidden">
           <Image
             src={project.image}
             alt={project.name}
             fill
-            className="object-cover transition-all duration-700"
+            className="object-cover transition-all duration-700 rounded-xl"
           />
-          <div className="absolute inset-0 bg-[var(--accent)] opacity-10 pointer-events-none" />
+          {/* <div className="absolute inset-0 bg-[var(--accent)] opacity-10 pointer-events-none" /> */}
         </div>
 
         {/* Tech stack */}

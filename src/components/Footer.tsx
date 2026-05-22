@@ -2,11 +2,12 @@
 
 import { personalInfo } from "@/lib/data";
 import { Code2, Link2, Globe } from "lucide-react";
+import Link from "next/link";
 
 const socials = [
-  { icon: Code2, href: personalInfo.github,   label: "GitHub"   },
-  { icon: Link2, href: personalInfo.linkedin, label: "LinkedIn" },
-  { icon: Globe, href: personalInfo.facebook, label: "Facebook" },
+  { href: personalInfo.github,   label: "GitHub", src:"/github.png"   },
+  { href: personalInfo.linkedin, label: "LinkedIn", src:"/linkedin.png" },
+  { href: personalInfo.facebook, label: "Facebook", src:"/facebook.png" },
 ];
 
 export default function Footer() {
@@ -18,7 +19,7 @@ export default function Footer() {
           {/* Left */}
           <div>
             <div className="font-display font-bold text-3xl mb-2">
-              HI<span className="text-[var(--accent)]">.</span>
+              T.E.A<span className="text-[var(--accent)]">.</span>
             </div>
             <p className="font-mono-custom text-xs text-[var(--text-dim)] uppercase tracking-widest">
               {personalInfo.designation} — {personalInfo.location}
@@ -27,17 +28,17 @@ export default function Footer() {
 
           {/* Center: socials */}
           <div className="flex items-center gap-4">
-            {socials.map(({ icon: Icon, href, label }) => (
-              <a
+            {socials.map(({ src , href, label }) => (
+              <Link
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-9 h-9 border border-[var(--border-strong)] rounded-sm flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--glow)] transition-all duration-300"
+                className="w-9 h-9 rounded-sm flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--glow)] transition-all duration-300"
               >
-                <Icon size={14} />
-              </a>
+                <img src={`${src}`} alt="" />
+              </Link>
             ))}
           </div>
 
